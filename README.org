@@ -1,0 +1,12 @@
+#+TITLE: Advent Of Code
+
+See https://adventofcode.com/2021
+
+# Install
+
+Install [quicklisp](https://www.quicklisp.org/beta/).
+
+Clone the repository in `~/quicklisp/local-projects/` and call
+`(ql:quickload :aoc)`.
+
+In the source directory, calling `make` will compile and run tests.
