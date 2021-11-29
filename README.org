@@ -2,11 +2,12 @@
 
 See https://adventofcode.com/2021
 
-# Install
+* Install
 
-Install [quicklisp](https://www.quicklisp.org/beta/).
+Install [[https://www.quicklisp.org/beta/][Quicklisp]].
 
-Clone the repository in `~/quicklisp/local-projects/` and call
-`(ql:quickload :aoc)`.
+Clone the repository in =~/quicklisp/local-projects/= and call
+=(ql:quickload :aoc)=.
 
-In the source directory, calling `make` will compile and run tests.
+Alternatively, in the source directory, calling =make= will compile
+and run tests.
