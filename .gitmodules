@@ -1,0 +1,3 @@
+[submodule "coalton"]
+	path = coalton
+	url = git@github.com:coalton-lang/coalton.git

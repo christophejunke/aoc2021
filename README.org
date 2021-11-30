@@ -2,12 +2,25 @@
 
 See https://adventofcode.com/2021
 
+* Submodules
+
+Clone with =--recursive= flag to also fetch the required submodules:
+
+- coalton
+
 * Install
 
 Install [[https://www.quicklisp.org/beta/][Quicklisp]].
 
-Clone the repository in =~/quicklisp/local-projects/= and call
-=(ql:quickload :aoc)=.
+This code was tested with the =2021-10-21= release of Quicklisp.
 
-Alternatively, in the source directory, calling =make= will compile
-and run tests.
+** From Lisp
+
+- Clone the repository in =~/quicklisp/local-projects/=.
+- Link the =coalton= directory to =local-projects= too, or push its absolute path to =asdf:*central-registry*=.
+- Call =(ql:quickload :aoc)=.
+
+** From shell
+
+Calling =make= loads all dependencies and outputs a =quicksbcl= executable, then runs all tests that have not yet passed.
+

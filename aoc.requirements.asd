@@ -1,6 +1,7 @@
 (defsystem :aoc.requirements
   :depends-on ("alexandria"
                "bordeaux-threads"
+               "coalton"
                "cl-ppcre"
                "cl-algebraic-data-type"
                "drakma"

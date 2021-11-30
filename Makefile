@@ -9,6 +9,7 @@ quicksbcl: Makefile aoc.requirements.asd
 	--no-userinit \
 	--eval '(load #p"~/quicklisp/setup.lisp")' \
 	--eval '(push *default-pathname-defaults* asdf:*central-registry*)' \
+	--eval '(push (merge-pathnames #P"coalton/") asdf:*central-registry*)' \
 	--eval '(ql:register-local-projects)' \
 	--eval '(ql:quickload :aoc.requirements)' \
 	--eval "(sb-ext:save-lisp-and-die \"$@\" :executable t)"
