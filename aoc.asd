@@ -29,4 +29,5 @@
                 :depends-on ("setup" "inputs" #:parsing)
                 :pathname "days"
                 :serial nil
-                :components ((:file "d00")))))
+                :components ((:file "d00")
+                             (:file "d01")))))
