@@ -11,8 +11,8 @@
             variables format))
   (flet ((bind (decoder variable) `((function ,decoder) ,variable)))
     (let ((pairs (mapcar #'bind decoders variables)))
-      `(register-groups-bind ,pairs ((let ((*use-bmh-matchers* t))
-                                       (load-time-value
+      `(register-groups-bind ,pairs ((load-time-value
+                                      (let ((*use-bmh-matchers* t))
                                         (create-scanner ',tree)))
                                      ,input
                                      :sharedp t)
