@@ -15,10 +15,10 @@
 
 ;;; First define a function over streams of integers that count how
 ;;; many times two successive values show an increase of value.  This
-;;; uses the SERIES::DEFUN macro, which is necessary to accept SERIES
-;;; as inputs.
+;;; uses the Z:DEFUN macro, which is necessary to accept SERIES as
+;;; inputs.
 
-(series::defun count-increasing-values (integers)
+(z:defun count-increasing-values (integers)
   (declare (z:optimizable-series-function)
            (type (z:series integer) integers)
            (z:off-line-port integers))
@@ -49,7 +49,7 @@
 ;;; and sum the values of each chunk to build another series of
 ;;; integers.
 
-(series::defun sum-of-window-of-three (integers)
+(z:defun sum-of-window-of-three (integers)
   (declare (z:optimizable-series-function)
            (type (z:series integer) integers)
            (z:off-line-port integers))
