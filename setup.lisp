@@ -14,3 +14,5 @@
         (make-kernel 8
                      :name "aoc"
                      :bindings nil)))
+
+(rename-package :coalton :coalton (list :c))
