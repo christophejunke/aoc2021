@@ -30,4 +30,5 @@
                 :pathname "days"
                 :serial nil
                 :components ((:file "d00")
-                             (:file "d01")))))
+                             (:file "d01")
+                             (:file "d02")))))
