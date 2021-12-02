@@ -21,6 +21,7 @@ up 3
 down 8
 forward 2")
 
+
 ;; Pure Lisp
 
 (defun part-1 (&optional (in 02) &aux (horiz 0) (depth 0))
@@ -64,6 +65,35 @@ forward 2")
     (up c:Integer)
     (down c:Integer)
     (forward c:Integer)))
+
+(c:coalton-toplevel
+  (c:define-type coord-1
+    (hor-dep c:integer c:integer)))
+
+(c:coalton-toplevel
+  (c:define-type coord-2
+    (hor-dep-aim c:integer c:integer c:integer)))
+
+(c:coalton-toplevel
+  (c:define (move-1 position command)
+    (c:match position
+      ((hor-dep horizontal depth)
+       (c:match command
+         ((up n)      (hor-dep horizontal (coalton-library:- depth n))) 
+         ((down n)    (hor-dep horizontal (coalton-library:+ depth n)))
+         ((forward n) (hor-dep (coalton-library:+ horizontal n) depth)))))))
+
+(c:coalton-toplevel
+  (c:define (move-2 position command)
+    (c:match position
+      ((hor-dep-aim horizontal depth aim)
+       (c:match command
+         ((up n)      (hor-dep-aim horizontal depth (coalton-library:- aim n))) 
+         ((down n)    (hor-dep-aim horizontal depth (coalton-library:+ aim n)))
+         ((forward n) (hor-dep-aim (coalton-library:+ horizontal n)
+                                   (coalton-library:+ depth 
+                                                      (coalton-library:* aim n))
+                                   aim)))))))
 
 (defun %fold-commands (folder accumulator)
   (do-input-lines (line 02 accumulator)
@@ -115,35 +145,6 @@ forward 2")
 ;; => "a"
 
 ;; okay, so now, define coord-X types
-
-(c:coalton-toplevel
-  (c:define-type coord-1
-    (hor-dep c:integer c:integer)))
-
-(c:coalton-toplevel
-  (c:define-type coord-2
-    (hor-dep-aim c:integer c:integer c:integer)))
-
-(c:coalton-toplevel
-  (c:define (move-1 position command)
-    (c:match position
-      ((hor-dep horizontal depth)
-       (c:match command
-         ((up n)      (hor-dep horizontal (coalton-library:- depth n))) 
-         ((down n)    (hor-dep horizontal (coalton-library:+ depth n)))
-         ((forward n) (hor-dep (coalton-library:+ horizontal n) depth)))))))
-
-(c:coalton-toplevel
-  (c:define (move-2 position command)
-    (c:match position
-      ((hor-dep-aim horizontal depth aim)
-       (c:match command
-         ((up n)      (hor-dep-aim horizontal depth (coalton-library:- aim n))) 
-         ((down n)    (hor-dep-aim horizontal depth (coalton-library:+ aim n)))
-         ((forward n) (hor-dep-aim (coalton-library:+ horizontal n)
-                                   (coalton-library:+ depth 
-                                                      (coalton-library:* aim n))
-                                   aim)))))))
 
 (c:coalton-toplevel
   ;; a typeclass for things that can be converted to coord-1
