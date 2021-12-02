@@ -84,6 +84,11 @@
                      ((#\i #\d) (emit/dispatch :integer length-param))
                      (#\c (emit/dispatch :character))
                      (#\s (emit/dispatch :word length-param))
+                     (#\S
+                      (if (eql #\( (peek-char nil stream nil nil))
+                          (destructuring-bind (package) (read stream)
+                            (emit/dispatch :symbol length-param package))
+                          (emit/dispatch :symbol length-param *package*)))
                      (t (cond
                           ((digit-char-p c)
                            (switch-to #'await-length-param c))
@@ -96,6 +101,17 @@
            :do (feed-fsm c)
            :finally (finish-literal-token))))))
 
+(defun find-symbol! (package)
+  (let ((package (etypecase package
+                   (string (find-package package))
+                   (package package))))
+    `(lambda (name)
+       (let ((name (string-upcase name)))
+         (or (find-symbol name ,package)
+             (error "symbol not found in package ~a: ~a" 
+                    ,package
+                    name))))))
+
 (defun as-regex-node (token)
   (ematch token
     ((list :integer d)
@@ -105,6 +121,8 @@
     ((list :character)      (values 'letter 'first-elt))
     ((list :word d)
      (values (if (= d 0) 'word (%word d)) 'identity))
+    ((list :symbol d p)
+     (values (if (= d 0) 'word (%word d)) (find-symbol! p)))
     ((list :literal string) string)))
 
 (defun decode-format (format)
