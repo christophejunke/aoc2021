@@ -31,4 +31,5 @@
                 :serial nil
                 :components ((:file "d00")
                              (:file "d01")
-                             (:file "d02")))))
+                             (:file "d02")
+                             (:file "d03")))))
