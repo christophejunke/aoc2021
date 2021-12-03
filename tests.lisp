@@ -18,20 +18,24 @@
         for (s e) in (mapcar #'cdr (sort res #'> :key #'car))
         for n = (if (string= s "TEST") "" (format nil " > ~a" s))
         for p = (package-name (symbol-package s))
+        for d = (or (documentation (symbol-package s) t) "")
         when e collect s into symbols
         collect n into snames
         collect p into pnames
         collect e into errors
+        collect d into docstr
         maximize (length n) into max-s
         maximize (length p) into max-p
+        maximize (length d) into max-d
         finally
-           (flet ((fmt (s p e)
+           (flet ((fmt (s p e d)
                     (format *trace-output*
-                            "~&> ~va~va~:[~; > ~:*~a~]~%"
+                            "~&> ~v@a (~va)~va~:[~; > ~:*~a~]~%"
+                            max-d d
                             max-p p
                             max-s s
                             e)))
-             (map () #'fmt snames pnames errors)
+             (map () #'fmt snames pnames errors docstr)
              (return
                (and symbols (lambda () (map () #'funcall symbols)))))))))
 
