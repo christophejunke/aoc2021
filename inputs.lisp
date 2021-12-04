@@ -34,6 +34,21 @@
   (with-input (s input)
     (read-line s)))
 
+(defmacro do-integers ((var string &optional result) &body body)
+  (with-gensyms (Z S E)
+    `(let ((,Z ,string))
+       (do-matches (,S ,E '(:greedy-repetition 1 () :digit-class) ,Z ,result)
+         (let ((,var (parse-integer ,Z :start ,S :end ,E)))
+           ,@body)))))
+
+(defun map-all-integers (string function)
+  (do-integers (integer string)
+    (funcall function integer)))
+
+(defun all-integers (string)
+  (with-buffer (b)
+    (map-all-integers string #'b)))
+
 (defun map-line-chunks (in function &aux stack)
   "Read consecutive non-empty lines and call FUNCTION on their concatenation."
   (flet ((emit ()
@@ -44,4 +59,3 @@
       (if (string= line "")
           (emit)
           (push line stack)))))
-

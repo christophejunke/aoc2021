@@ -8,6 +8,9 @@
            #:slurp-line
            #:map-line-chunks
            #:map-input
+           #:do-integers
+           #:map-all-integers
+           #:all-integers
            #:int
            #:word
            #:letter
