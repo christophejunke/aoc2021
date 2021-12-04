@@ -81,8 +81,20 @@
                         (setf bs s br r))))
   (values br bs))
 
+(defun part-2 (in &aux (bs 0) br)
+  (process-input in (lambda (s r)
+                      (when (> s bs)
+                        (setf bs s br r))))
+  (values br bs))
+
 (define-test test-part-1-example
   (assert (= 4512 (part-1 "04-ex"))))
 
 (define-test test-part-1
   (assert (= 41503 (part-1 04))))
+
+(define-test test-part-2-example
+  (assert (= 1924 (part-2 "04-ex"))))
+
+(define-test test-part-2
+  (assert (= 3178 (part-2 04))))
