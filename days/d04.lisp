@@ -47,11 +47,9 @@
                   (= (incf (aref rows row)) (length cols)))
           (* value total))))))
 
-(defun part-1 (input &optional (width 5) (height width))
+(defun process-input (input function &optional (width 5) (height width))
   (with-input (in input)
     (let* ((numbers (all-integers (read-line in)))
-           (best-result :unknown)
-           (max-steps (length numbers))
            (state (make-instance 'squid-game :height height :width width)))
       (flet ((process-board (lines)
                ;; INIT MAP
@@ -65,20 +63,23 @@
                      (incf col))))
                ;; MARK UNTIL BINGO
                (loop
-                 :for steps :from 0 :upto max-steps
+                 :for steps :from 0
                  :for number :across numbers
                  :for result := (mark-value state number)
                  :until result
-                 :finally (when (and result (< steps max-steps))
-                            (setf max-steps steps)
-                            (setf best-result result)))
+                 :finally (funcall function steps result))
                ;; CLEAN FOR NEXT STEP
                (with-slots (map cols rows) state
                  (clrhash map)
                  (fill cols 0)
                  (fill rows 0))))
-        (aoc:map-line-chunks in #'process-board)
-        best-result))))
+        (aoc:map-line-chunks in #'process-board)))))
+
+(defun part-1 (in &aux bs br)
+  (process-input in (lambda (s r)
+                      (when (or (null bs) (< s bs))
+                        (setf bs s br r))))
+  (values br bs))
 
 (define-test test-part-1-example
   (assert (= 4512 (part-1 "04-ex"))))
