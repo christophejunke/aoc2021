@@ -35,6 +35,10 @@
 (defun part-1 (input)  (solve input :dir '+))
 (defun part-2 (input)  (solve input :dir '*))
 
+(defun line-points (from to &aux result)
+  (map-line-points from to (push-to result) :dir '*)
+  (nreverse result))
+
 (define-test test-interpol
   (assert (equal (line-points #C(10 0) #C(10 6))
                  '(#C(10 0) #C(10 1) #C(10 2) #C(10 3) #C(10 4) #C(10 5) #C(10 6))))
