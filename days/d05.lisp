@@ -16,7 +16,6 @@
 
 (defun line-points (from to &optional (vec (- to from)))
   (loop
-    ;; manhattan distance
     :with d = (max (abs (imagpart vec))
                    (abs (realpart vec)))
     ;; due to puzzle constraints, U has only integer components
