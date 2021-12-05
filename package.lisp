@@ -11,6 +11,7 @@
            #:do-integers
            #:map-all-integers
            #:all-integers
+           #:push-to
            #:int
            #:word
            #:letter

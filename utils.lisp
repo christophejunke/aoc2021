@@ -9,7 +9,8 @@
            #:with-buffer
            #:run-length-encoding
            #:fold-hash-values
-           #:rank))
+           #:rank
+           #:push-to))
 
 (in-package aoc.utils)
 
@@ -53,6 +54,9 @@
               :element-type element-type
               :fill-pointer 0
               :adjustable t))
+
+(defmacro push-to (place &aux (o (gensym)))
+  `(lambda (,o) (push ,o ,place)))
 
 (defun buffer-push (buffer value)
   (vector-push-extend value buffer (array-total-size buffer)))
