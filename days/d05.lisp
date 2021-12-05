@@ -14,33 +14,26 @@
     (scanner-bind ("%d,%d -> %d,%d" x1 y1 x2 y2) line
       (funcall function (complex x1 y1) (complex x2 y2)))))
 
-(defun line-points (from to &optional (vec (- to from)))
-  (loop
-    :with d = (max (abs (imagpart vec))
-                   (abs (realpart vec)))
-    ;; due to puzzle constraints, U has only integer components
-    :with u = (/ vec d)
-    ;; we can interpolate without loss of precision
-    :for n :from 0 :upto d :collect (+ from (* n u))))
+(defun map-line-points (from to function &key dir &aux (vec (- to from)))
+  (when (ecase dir
+          (+ (or (= 0 (imagpart vec))
+                 (= 0 (realpart vec))))
+          (* t))
+    (loop
+      :with d = (max (abs (imagpart vec))
+                     (abs (realpart vec)))
+      ;; due to puzzle constraints, U has only integer components
+      :with u = (/ vec d)
+      ;; we can interpolate without loss of precision
+      :for n :from 0 :upto d :do (funcall function (+ from (* n u))))))
 
-(defun part-1 (input &aux (map (make-infinite-grid 0)) (total 0))
-  (map-vent-lines input
-                  (lambda (from to)
-                    (let ((vec (- to from)))
-                      (when (or (= 0 (imagpart vec))
-                                (= 0 (realpart vec)))
-                        (dolist (p (line-points from to vec))
-                          (when (= 2 (incf (iref map p)))
-                            (incf total)))))))
+(defun solve (in &key dir &aux (map (make-infinite-grid 0)) (total 0))
+  (flet ((m (p) (when (= 2 (incf (iref map p))) (incf total))))
+    (map-vent-lines in (lambda (fm to) (map-line-points fm to #'m :dir dir))))
   total)
 
-(defun part-2 (input &aux (map (make-infinite-grid 0)) (total 0))
-  (map-vent-lines input
-                  (lambda (from to)
-                    (dolist (p (line-points from to))
-                      (when (= 2 (incf (iref map p)))
-                        (incf total)))))
-  total)
+(defun part-1 (input)  (solve input :dir '+))
+(defun part-2 (input)  (solve input :dir '*))
 
 (define-test test-interpol
   (assert (equal (line-points #C(10 0) #C(10 6))
