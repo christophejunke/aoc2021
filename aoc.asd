@@ -10,7 +10,7 @@
                 :components ((:file "package")
                              (:file "array-grids"
                               :depends-on ("package"))
-                             (:file "utils" 
+                             (:file "utils"
                               :depends-on ("package"))
                              (:file "macros")
                              (:file "hash-grids"
@@ -34,4 +34,5 @@
                              (:file "d02")
                              (:file "d03")
                              (:file "d04")
-                             (:file "d05")))))
+                             (:file "d05")
+                             (:file "d06")))))
