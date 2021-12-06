@@ -31,10 +31,18 @@
 (defun finite (infinite)
   (subseq infinite 0 9))
 
-(defun simulate (in days)
+(defun simulate (in days &aux (time (get-internal-real-time)))
   (loop
     :for state = (make-state-from-input in) :then (update state)
-    :repeat days :finally (return (reduce #'+ (finite state)))))
+    :for d :below days
+    :do (when (= 0 (rem d 1000))
+          (let ((now (get-internal-real-time)))
+            (when (> (- now time)
+                     #.(* 5 internal-time-units-per-second))
+              (setf time now)
+              (print d)
+              (finish-output))))
+    :finally (return (reduce #'+ (finite state)))))
 
 (defun all-states (input)
   (map-input input :transform #'make-state-from-string :type 'list))
