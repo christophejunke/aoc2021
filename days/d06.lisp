@@ -9,10 +9,6 @@
 
 (in-package :aoc.06)
 
-(defun make-state (seq &aux (state (make-array 9)))
-  (prog1 state
-    (map () (lambda (i) (incf (aref state i))) seq)))
-
 (defun make-state-from-string (string)
   (make-state (all-integers string)))
 
@@ -20,35 +16,38 @@
   (with-input (in input)
     (make-state-from-string (read-line in))))
 
+(defun make-state (seq &aux (state (make-array 9)))
+  (map () (lambda (i) (incf (aref state i))) seq)
+  (let ((list (coerce state 'list)))
+    (nconc list list)))
+
 (defun update (state)
-  (declare (type (vector integer 9) state))
-  (prog1 state
-    (let ((zero (shiftf (aref state 0)
-                        (aref state 1)
-                        (aref state 2)
-                        (aref state 3)
-                        (aref state 4)
-                        (aref state 5)
-                        (aref state 6)
-                        (aref state 7)
-                        (aref state 8)
-                        0)))
-      (incf (aref state 6) zero)
-      (incf (aref state 8) zero))))
+  (let* ((zero (pop state))
+         (sixth (nthcdr 6 state)))
+    (incf (car sixth) zero)
+    (setf (caddr sixth) zero)
+    state))
+
+(defun finite (infinite)
+  (subseq infinite 0 9))
+
+(defun simulate (in days)
+  (loop
+    :for state = (make-state-from-input in) :then (update state)
+    :repeat days :finally (return (reduce #'+ (finite state)))))
 
 (defun all-states (input)
   (map-input input :transform #'make-state-from-string :type 'list))
 
+(defun copy-state (state)
+  (let ((finite (finite state)))
+    (nconc finite finite)))
+
 (define-test test-part-1-update
   (loop
     for expected in (all-states "06-ex")
-    for test = (copy-seq expected) then (update test)
-    do (assert (equalp expected test))))
-
-(defun simulate (in days)
-  (let ((state (make-state-from-input in)))
-    (loop repeat days do (update state))
-    (reduce #'+ state)))
+    for test = (copy-state expected) then (update test)
+    do (assert (equalp (finite expected) (finite test)))))
 
 (define-test test-part-1-example
   (assert (= 5934 (simulate "06-ex" 80))))
