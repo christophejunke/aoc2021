@@ -36,4 +36,5 @@
                              (:file "d04")
                              (:file "d05")
                              (:file "d06")
-                             (:file "d07")))))
+                             (:file "d07")
+                             (:file "d08")))))
