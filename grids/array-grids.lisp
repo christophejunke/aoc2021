@@ -49,4 +49,4 @@
   (loop :for (dx dy) :in offsets
         :do (let ((x (+ x dx)) (y (+ y dy)))
              (when (array-in-bounds-p g y x)
-               (funcall f (aref g y x))))))
+               (funcall f (aref g y x) :x x :y y :allow-other-keys t)))))
