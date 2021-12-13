@@ -7,6 +7,7 @@
            #:make-buffer
            #:buffer-push
            #:with-buffer
+           #:with-buffer*
            #:run-length-encoding
            #:fold-hash-values
            #:rank
@@ -68,6 +69,13 @@
          (flet ((,b (,v) (buffer-push ,b ,v)))
            (declare (inline ,b))
            ,@body)))))
+
+(defmacro with-buffer* ((b &rest make-buffer-args) &body body)
+  (with-gensyms (v)
+    `(let ((,b (make-buffer ,@make-buffer-args)))
+       (flet ((,b (,v) (buffer-push ,b ,v)))
+         (declare (inline ,b))
+         ,@body))))
 
 (defun make-window (source &key (size 0) (offset 0))
   (make-array size
