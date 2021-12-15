@@ -40,4 +40,5 @@
                              (:file "d08")
                              (:file "d09")
                              (:file "d10")
-                             (:file "d11")))))
+                             (:file "d11")
+                             (:file "d12")))))
